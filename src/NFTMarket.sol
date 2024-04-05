@@ -6,9 +6,11 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-contract NFTMarket is Initializable,
+contract NFTMarket is
+    Initializable,
     AccessControlUpgradeable,
-    ReentrancyGuardUpgradeable {
+    ReentrancyGuardUpgradeable
+{
     // NFT Contract address -> NFT TokenID -> Listing
     mapping(address => mapping(uint256 => Listing)) private s_listings;
 
@@ -26,6 +28,7 @@ contract NFTMarket is Initializable,
         address seller;
         address desiredNftAddress; // Desired NFTs for swap !!!W find a way to have multiple desiredNftAddresses ( and / or ) - maybe by using an array here(?)
         uint256 desiredTokenId; // Desired token IDs for swap !!!W find a way to have multiple desiredNftAddresses ( and / or ) - maybe by using an array here(?)
+        uint8 category; //
     } // *** also find a way to have the seller list their nft for swap WITH additional ETH. so that they can say i want my 1ETH worth NFT to be swapped against this specific NFT AND 0.3 ETH.
 
     event ItemListed(
@@ -36,7 +39,8 @@ contract NFTMarket is Initializable,
         uint256 price,
         address seller,
         address desiredNftAddress,
-        uint256 desiredTokenId
+        uint256 desiredTokenId,
+        uint8 category
     );
     // *** should i add the seller to this event? Yes, did it.
     event ItemBought(
@@ -48,7 +52,8 @@ contract NFTMarket is Initializable,
         address seller,
         address buyer,
         address desiredNftAddress,
-        uint256 desiredTokenId
+        uint256 desiredTokenId,
+        uint8 category
     );
 
     event ItemCanceled(
@@ -59,7 +64,8 @@ contract NFTMarket is Initializable,
         uint256 price,
         address seller,
         address desiredNftAddress,
-        uint256 desiredTokenId
+        uint256 desiredTokenId,
+        uint8 category
     );
 
     event ItemUpdated(
@@ -70,7 +76,8 @@ contract NFTMarket is Initializable,
         uint256 price,
         address seller,
         address desiredNftAddress,
-        uint256 desiredTokenId
+        uint256 desiredTokenId,
+        uint8 category
     );
     error NFTMarket__NotApprovedForMarketplace();
     error NFTMarket__NotOwner(
@@ -89,7 +96,6 @@ contract NFTMarket is Initializable,
     /////////////////
     // Constructor //
     /////////////////
-
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -115,9 +121,11 @@ contract NFTMarket is Initializable,
     // nonReentrant Modifier is inherited
 
     modifier onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "Caller is not a admin");
+        require(
+            hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+            "Caller is not a admin"
+        );
         _;
-        
     }
 
     modifier notListed(address nftAddress, uint256 tokenId) {
@@ -169,7 +177,8 @@ contract NFTMarket is Initializable,
         uint256 tokenId,
         uint256 price,
         address desiredNftAddress,
-        uint256 desiredTokenId
+        uint256 desiredTokenId,
+        uint8 category
     )
         external
         // Challenge: Have this contract accept payment in a subset of tokens as well
@@ -195,7 +204,8 @@ contract NFTMarket is Initializable,
             price,
             msg.sender,
             desiredNftAddress,
-            desiredTokenId
+            desiredTokenId,
+            category
         );
         emit ItemListed(
             s_listingId,
@@ -205,7 +215,8 @@ contract NFTMarket is Initializable,
             price,
             msg.sender,
             desiredNftAddress,
-            desiredTokenId
+            desiredTokenId,
+            category
         );
     }
 
@@ -272,7 +283,8 @@ contract NFTMarket is Initializable,
                 listedItem.seller,
                 msg.sender,
                 listedItem.desiredNftAddress,
-                listedItem.desiredTokenId
+                listedItem.desiredTokenId,
+                listedItem.category
             );
         }
     }
@@ -296,7 +308,8 @@ contract NFTMarket is Initializable,
             listedItem.price,
             msg.sender,
             listedItem.desiredNftAddress,
-            listedItem.desiredTokenId
+            listedItem.desiredTokenId,
+            listedItem.category
         );
         // nft = IERC721(nftAddress); nft.approve(address(0), tokenId);
     }
@@ -332,14 +345,15 @@ contract NFTMarket is Initializable,
         listedItem.desiredTokenId = newdesiredTokenId;
         s_listings[nftAddress][tokenId] = listedItem;
         emit ItemUpdated(
-            listedItem.listingId, 
+            listedItem.listingId,
             nftAddress,
             tokenId,
             true,
             listedItem.price,
             msg.sender,
             listedItem.desiredNftAddress,
-            listedItem.desiredTokenId
+            listedItem.desiredTokenId,
+            listedItem.category
         );
     }
 
@@ -381,6 +395,3 @@ contract NFTMarket is Initializable,
         return address(this).balance;
     }
 }
-
-
-
