@@ -28,4 +28,8 @@ contract NFTMarketTest is Test {
         }
         vm.stopPrank();
     }
+    function testInit() public {
+        console.log("admin~:", admin);
+        console.log("nftMarket~:", address(nftMarket));
+    }
 }
