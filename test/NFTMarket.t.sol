@@ -4,6 +4,8 @@ pragma solidity ^0.8.23;
 import {Test, console, StdAssertions} from "forge-std/Test.sol";
 import {NFTMarket} from "../src/NFTMarket.sol";
 import {NftTokenManager} from "../src/NftTokenManager.sol";
+import {UsdtToken} from "../src/UsdtToken.sol";
+
 
 import {Upgrades, Options} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
@@ -11,9 +13,11 @@ contract NFTMarketTest is Test {
     address admin = makeAddr("admin");
     address merchant = makeAddr("merchant");
     address user = makeAddr("user");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public immutable MINTER_ROLE = keccak256("MINTER");
+
     NFTMarket public nftMarket;
     NftTokenManager public nftTokenManager;
+    UsdtToken public usdt;
 
 
     function setUp() public {
@@ -36,6 +40,11 @@ contract NFTMarketTest is Test {
                 0xf2871ee0c8b5f914ce57858eb217665feeba93b506630c144ec48ff4c5f868eb
             );
             nftTokenManager.setAllowlistMint(true);
+            nftTokenManager.grantRole(MINTER_ROLE, user);
+            usdt = new UsdtToken(admin);
+            usdt.mint(user,10000e6);
+            usdt.mint(merchant,10000e6);
+
         }
         vm.stopPrank();
     }
@@ -87,18 +96,33 @@ Tree
     }
 
     function test_BatchMintRemainingTokens() public {
-        vm.startPrank(admin);
+        vm.startPrank(user);
         {
-            nftTokenManager.batchMintRemainingTokens(admin, 10);
+            nftTokenManager.batchMintRemainingTokens(user, 10);
+            //all nft approve to nftMarket
+            //nftTokenManager.setApprovalForAll(address(nftMarket), true);
+            nftTokenManager.approve(address(nftMarket), 1);
         }
         vm.stopPrank();
     }
 
     function test_Mint() public {
-        vm.startPrank(admin);
+        vm.startPrank(user);
         {
             //nftTokenManager._mint(admin, 1);
         }
+        vm.stopPrank();
+    }
+
+
+    function test_ListItem() public {
+        test_BatchMintRemainingTokens();
+        vm.startPrank(user);
+        {
+            //category:1 Art,2 Collectibles,3 Music,4 Photography,5 Video,6 Utility,7 Sports,8 Virtual World
+            nftMarket.listItem(address(nftTokenManager),1,1000e18,address(nftTokenManager),11,1);
+        }
+
         vm.stopPrank();
     }
 

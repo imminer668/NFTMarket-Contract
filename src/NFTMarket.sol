@@ -28,7 +28,7 @@ contract NFTMarket is
         address seller;
         address desiredNftAddress; // Desired NFTs for swap !!!W find a way to have multiple desiredNftAddresses ( and / or ) - maybe by using an array here(?)
         uint256 desiredTokenId; // Desired token IDs for swap !!!W find a way to have multiple desiredNftAddresses ( and / or ) - maybe by using an array here(?)
-        uint8 category; //
+        uint8 category; //1 Art,2 Collectibles,3 Music,4 Photography,5 Video,6 Utility,7 Sports,8 Virtual World
     } // *** also find a way to have the seller list their nft for swap WITH additional ETH. so that they can say i want my 1ETH worth NFT to be swapped against this specific NFT AND 0.3 ETH.
 
     event ItemListed(
