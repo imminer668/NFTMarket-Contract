@@ -6,7 +6,6 @@ import {NFTMarket} from "../src/NFTMarket.sol";
 import {NftTokenManager} from "../src/NftTokenManager.sol";
 import {UsdtToken} from "../src/UsdtToken.sol";
 
-
 import {Upgrades, Options} from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract NFTMarketTest is Test {
@@ -18,7 +17,6 @@ contract NFTMarketTest is Test {
     NFTMarket public nftMarket;
     NftTokenManager public nftTokenManager;
     UsdtToken public usdt;
-
 
     function setUp() public {
         //deploy the NFTMarket contract
@@ -42,12 +40,12 @@ contract NFTMarketTest is Test {
             nftTokenManager.setAllowlistMint(true);
             nftTokenManager.grantRole(MINTER_ROLE, user);
             usdt = new UsdtToken(admin);
-            usdt.mint(user,10000e6);
-            usdt.mint(merchant,10000e6);
-
+            usdt.mint(user, 10000e6);
+            usdt.mint(merchant, 10000e6);
         }
         vm.stopPrank();
     }
+
     /*
     admin: 0xaA10a84CE7d9AE517a52c6d5cA153b369Af99ecF
     merchant: 0x00655EA989254C13e93C5a1F74C4636b5B9926B5
@@ -114,16 +112,48 @@ Tree
         vm.stopPrank();
     }
 
-
     function test_ListItem() public {
         test_BatchMintRemainingTokens();
         vm.startPrank(user);
         {
             //category:1 Art,2 Collectibles,3 Music,4 Photography,5 Video,6 Utility,7 Sports,8 Virtual World
-            nftMarket.listItem(address(nftTokenManager),1,1000e18,address(nftTokenManager),11,1);
+            nftMarket.listItem(
+                address(nftTokenManager),
+                1,
+                1000e18,
+                address(nftTokenManager),
+                11,
+                1
+            );
         }
 
         vm.stopPrank();
     }
 
+    function test_CancelListing() public {
+        test_BatchMintRemainingTokens();
+        vm.startPrank(user);
+        {
+            nftMarket.cancelListing(address(nftTokenManager), 1);
+        }
+
+        vm.stopPrank();
+    }
+
+    function test_UpdateListing() public {
+        vm.startPrank(user);
+        {
+            //category:1 Art,2 Collectibles,3 Music,4 Photography,5 Video,6 Utility,7 Sports,8 Virtual World
+            nftMarket.updateListing(
+                address(nftTokenManager),
+                1,
+                1000e18,
+                address(nftTokenManager),
+                11,
+                1
+            );
+        }
+
+        vm.stopPrank();
+    }
 }

@@ -320,7 +320,8 @@ contract NFTMarket is
         uint256 tokenId,
         uint256 newPrice,
         address newDesiredNftAddress,
-        uint256 newdesiredTokenId
+        uint256 newdesiredTokenId,
+        uint8 newCategory
     )
         external
         isListed(nftAddress, tokenId)
@@ -343,6 +344,7 @@ contract NFTMarket is
         listedItem.price = newPrice;
         listedItem.desiredNftAddress = newDesiredNftAddress;
         listedItem.desiredTokenId = newdesiredTokenId;
+        listedItem.category = newCategory;
         s_listings[nftAddress][tokenId] = listedItem;
         emit ItemUpdated(
             listedItem.listingId,
