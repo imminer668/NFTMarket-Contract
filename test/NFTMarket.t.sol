@@ -156,4 +156,14 @@ Tree
 
         vm.stopPrank();
     }
+
+    function test_BuyItem() public {
+        test_BatchMintRemainingTokens();
+        vm.startPrank(user);
+        {
+            nftMarket.buyItem(address(nftTokenManager), 1);
+        }
+
+        vm.stopPrank();
+    }
 }
