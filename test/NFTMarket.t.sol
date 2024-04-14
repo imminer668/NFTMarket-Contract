@@ -163,7 +163,16 @@ Tree
         {
             nftMarket.buyItem(address(nftTokenManager), 1);
         }
+        vm.stopPrank();
+    }
 
+    function test_WithdrawProceeds() public {
+        test_BatchMintRemainingTokens();
+        test_BuyItem();
+        vm.startPrank(admin);
+        {
+            nftMarket.withdrawProceeds();
+        }
         vm.stopPrank();
     }
 }
