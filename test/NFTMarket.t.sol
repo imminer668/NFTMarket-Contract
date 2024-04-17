@@ -175,4 +175,11 @@ Tree
         }
         vm.stopPrank();
     }
+     function test_SetFee() public {
+        vm.startPrank(admin);
+        {
+            nftMarket.setFee(1000);
+        }
+        vm.stopPrank();
+    }
 }
