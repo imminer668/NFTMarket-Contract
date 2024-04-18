@@ -175,10 +175,20 @@ Tree
         }
         vm.stopPrank();
     }
-     function test_SetFee() public {
+
+    function test_SetFee() public {
         vm.startPrank(admin);
         {
             nftMarket.setFee(1000);
+        }
+        vm.stopPrank();
+    }
+
+    function testFuzz_SetFee(uint256 amount) public {
+        vm.assume(amount > 0 && amount < 10000);
+        vm.startPrank(admin);
+        {
+            nftMarket.setFee(amount);
         }
         vm.stopPrank();
     }
