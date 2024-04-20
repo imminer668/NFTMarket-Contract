@@ -192,4 +192,8 @@ Tree
         }
         vm.stopPrank();
     }
+
+     function test_getBalance() public view {
+            nftMarket.getBalance();
+    }
 }
