@@ -67,7 +67,7 @@ Tree
     "0x05b26225916a54a9f7c16388731c332005e6b2f7a59dd996ab3cc9faa8357557"
     ]
     */
-    function test_First() public {
+    function test_First() public view {
         console.log("admin:", address(admin));
         console.log("merchant:", address(merchant));
         console.log("user:", address(user));
@@ -193,7 +193,11 @@ Tree
         vm.stopPrank();
     }
 
-     function test_getBalance() public view {
-            nftMarket.getBalance();
+    function test_getBalance() public view {
+        nftMarket.getBalance();
+    }
+
+    function test_GetNextListingId() public view {
+        nftMarket.getNextListingId();
     }
 }
