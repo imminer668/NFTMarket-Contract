@@ -200,4 +200,8 @@ Tree
     function test_GetNextListingId() public view {
         nftMarket.getNextListingId();
     }
+
+    function test_GetProceeds() public view {
+        nftMarket.getProceeds(admin);
+    }
 }
