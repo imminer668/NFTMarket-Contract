@@ -197,11 +197,16 @@ Tree
         nftMarket.getBalance();
     }
 
-    function test_GetNextListingId() public view {
-        nftMarket.getNextListingId();
+    function test_GetListing() public view {
+        uint256 id = nftMarket.getNextListingId();
+        nftMarket.getListing(address(nftTokenManager), id - 1);
     }
 
     function test_GetProceeds() public view {
         nftMarket.getProceeds(admin);
+    }
+
+    function test_GetNextListingId() public view {
+        nftMarket.getNextListingId();
     }
 }
