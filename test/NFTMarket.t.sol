@@ -209,4 +209,8 @@ Tree
     function test_GetNextListingId() public view {
         nftMarket.getNextListingId();
     }
+
+    function testFuzz_GetListing(uint256 id) public view {
+        nftMarket.getListing(address(nftTokenManager), id);
+    }
 }
