@@ -112,6 +112,10 @@ Tree
         vm.stopPrank();
     }
 
+    function testFuzz_tokenURI(uint256 _tokenId) public view {
+        nftTokenManager.tokenURI(_tokenId);
+    }
+
     function test_ListItem() public {
         test_BatchMintRemainingTokens();
         vm.startPrank(user);
