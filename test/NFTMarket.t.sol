@@ -116,6 +116,22 @@ Tree
         nftTokenManager.tokenURI(_tokenId);
     }
 
+    function test_SetMaxSupply(uint256 _maxSupply) public {
+        vm.startPrank(admin);
+        {
+            nftTokenManager.setMaxSupply(_maxSupply);
+        }
+        vm.stopPrank();
+    }
+
+    function testFuzz_SetMaxSupply(uint256 _maxSupply) public {
+        vm.startPrank(admin);
+        {
+            nftTokenManager.setMaxSupply(_maxSupply);
+        }
+        vm.stopPrank();
+    }
+
     function test_ListItem() public {
         test_BatchMintRemainingTokens();
         vm.startPrank(user);
