@@ -132,6 +132,24 @@ Tree
         vm.stopPrank();
     }
 
+    function test_Burn(uint256 _tokenId) public {
+        vm.startPrank(admin);
+        {
+            nftTokenManager.burn(_tokenId);
+        }
+        vm.stopPrank();
+    }
+
+    function test_SetApprovalForAll() public {
+        vm.startPrank(user);
+        {
+            nftTokenManager.setApprovalForAll(address(nftMarket), true);
+        }
+        vm.stopPrank();
+    }
+
+    function test_GetApproved() public view {}
+
     function test_ListItem() public {
         test_BatchMintRemainingTokens();
         vm.startPrank(user);
