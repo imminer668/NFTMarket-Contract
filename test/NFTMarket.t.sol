@@ -139,6 +139,14 @@ Tree
         }
         vm.stopPrank();
     }
+    function test_SetUriPrefix(string memory _uriPrefix) public {
+        vm.startPrank(admin);
+        {
+            nftTokenManager.setUriPrefix(_uriPrefix);
+        }
+        vm.stopPrank();
+    }
+    
 
     function test_SetApprovalForAll() public {
         vm.startPrank(user);
