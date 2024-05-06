@@ -112,6 +112,10 @@ Tree
         vm.stopPrank();
     }
 
+    function test_TokenURI(uint256 _tokenId) public view {
+        nftTokenManager.tokenURI(_tokenId);
+    }
+
     function testFuzz_tokenURI(uint256 _tokenId) public view {
         nftTokenManager.tokenURI(_tokenId);
     }
@@ -139,6 +143,7 @@ Tree
         }
         vm.stopPrank();
     }
+
     function test_SetUriPrefix(string memory _uriPrefix) public {
         vm.startPrank(admin);
         {
@@ -146,7 +151,6 @@ Tree
         }
         vm.stopPrank();
     }
-    
 
     function test_SetApprovalForAll() public {
         vm.startPrank(user);
