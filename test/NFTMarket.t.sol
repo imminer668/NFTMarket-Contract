@@ -112,6 +112,10 @@ Tree
         vm.stopPrank();
     }
 
+    function test_HasMinted(address _owner) public view {
+        nftTokenManager.hasMinted(_owner);
+    }
+
     function test_TokenURI(uint256 _tokenId) public view {
         nftTokenManager.tokenURI(_tokenId);
     }
