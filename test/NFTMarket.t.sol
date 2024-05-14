@@ -237,6 +237,7 @@ Tree
     function test_SetFee() public {
         vm.startPrank(admin);
         {
+            // 1000 is 1%
             nftMarket.setFee(1000);
         }
         vm.stopPrank();
